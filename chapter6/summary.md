@@ -96,16 +96,59 @@ flavors_flavor 테이블만 생성이 된다.
 
 ## 6.2 장고 모델 디자인 
 ### 6.2.1 정규화하기 
+#### 데이터베이스 정규화
+- [Database normalization](http://en.wikipedia.org/wiki/Database_normalization)
+- [Relational Database Design](http://en.wikibooks.org/wiki/Relational_Database_Design/Normalization)
+
+이미 모델에 포함된 데이터들이 중복되어 다시 다른 모델에 포함되지 않도록 한다.
 
 ### 6.2.2 캐시와 비정규화 
+'24장 장고 성능 향상시키기'에서 자세히 다룬다.
 
 ### 6.2.3 반드시 필요한 경우에만 비정규화를 하도록 하자 
+'24장 장고 성능 향상시키기'에서 제시한 방법들로도 해결할 수 없을 때 비정규화에 대해 고민해도 늦지않다.
 
 ### 6.2.4 언제 널을 쓰고 언제 공백을 쓸 것인가 
+모델 필드 인자들에 대한 가이드 참고하기
+
+- django 표준은 빈 값(empty value)을 빈 문자열(empty string)로 저장한다.  
+- BooleanField 에는 NullBooleanField를 사용한다. 
+
+> IPAddressField 대신 GenericIPAddressField를 사용하자.
 
 ### 6.2.5 언제 BinaryField를 이용할 것인가? 
+#### BinaryField
+- raw binary data 또는 byte를 저장하는 필드
+- filter, exclude, 기타 SQL 액션들이 적용되지 않음
+
+#### Using
+- 메시지팩 형식의 콘텐츠ch
+- 원본 센서 데이터
+- 압축된 데이터
+
+
+> 바이너리 데이터는 크기가 방대할 수 있고, 이로 인하여 데이터베이스가 느려질 수도 있다.  
+> **BinaryField로 부터 파일을 직접 서비스 하는 것은 금물!**
 
 ### 6.2.6 범용 관계 피하기  
+####범용 관계
+한 테이블로부터 다른 테이블을 서로 `제약 조건 없는 외부 키 (unconstrained foreign key, GenericForeignKey)`로 바인딩 하는 것.
+
+#### 발생할 수 있는 문제점 
+- 모델 간의 인덱싱이 존재하지 않으면 쿼리 속도에 손해를 가져온다.
+- 다른 테이블에 존재하지 않는 레코드를 참조할 수 있는 데이터 충돌의 위험성이 존재함.
+
+#### 장점 
+- 기존에 만들어 둔 여러 모델 타입과 상호작용을 하는 앱을 새로 제작할 때 수월해진다.  
+예) 즐겨찾기, 평점 매기기, 투표, 메시지, 태깅 등
+
+> 제약 없이 연결된 부분이 프로젝트에서 중요한 데이터를 처리하게 되면 문제가 심각해질 수 있다.
+
+#### 추천방법
+- 범용 관계와 GenericForeignkey 이용을 피한다.
+- 범용 관계가 필요하다면, 모델 디자인을 바꾸거나 새로운 PostgreSQL 필드로 해결할 수 있는지 확인한다.
+- 불가피한 경우 서드 파티 앱을 고려해보자.
+
 
 ### 6.2.7 PostgreSQL에만 존재하는 필드에 대해 언제 널을 쓰고 언제 공백을 쓸 것인가 
 
