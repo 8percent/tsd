@@ -170,8 +170,8 @@ flavors_flavor 테이블만 생성이 된다.
 - 장고의 모델 데이터를 조정하거나 변경할 수 있는 관리 도구를 제작할 때 
 - 시각화 또는 분석 라이브러리를 제작할 때
 
-- [모델 _meta 문서](http://docs.djangoproject.com/en/1.8/ref/models/meta/)
-- [모델 _meta 에 대한 장고 1.8 릴리스 노트](https://docs.djangoproject.com/en/1.8/releases/1.8/#model-meta-api)
+[모델 _meta 문서](http://docs.djangoproject.com/en/1.8/ref/models/meta/)  
+[모델 _meta 에 대한 장고 1.8 릴리스 노트](https://docs.djangoproject.com/en/1.8/releases/1.8/#model-meta-api)
 
 
 ## 6.4 모델 매니저 
