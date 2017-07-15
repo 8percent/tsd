@@ -5,10 +5,10 @@
 
 ##### 모델을 작업하며 이용하는 장고 패키지들
 
-~~~
+```
 django-model-utils : 일반적인 패턴 처리에 이용 (e.g.TimeStampedModel)
 django-extensions : 모든 앱의 모델 클래스를 자동으로 로드해주는 shell_plus 관리 명령 지원 (너무 많은 기능을 포함하고 있는 것이 단점)
-~~~
+```
 
 ## 6.1 시작하기 
 
@@ -47,7 +47,7 @@ django-extensions : 모든 앱의 모델 클래스를 자동으로 로드해주�
 
 #### 추상화 기초 클래스 만들기
 
-~~~python
+```python
 # core/models.py
 form django.db import models
 
@@ -57,22 +57,19 @@ class TimeStampedModel(Models.Model):
 	
 	class Meta:	
 		abstract = True
-~~~
-
+```
 TimeStampedModel은 추상화 기초 클래스로 선언했기 때문에 마이그레이션을 실행할 때 core_timestampedmodel 테이블이 생성되지 않는다.
 
 #### 상속해 보기
 
-~~~python
+```python
 # flavors/models.py
 from django.db import models
-
 from core.models import TimeStampedModel
 
 class Flavor(TimeStampedModel):
 	title = models.CharField(max_length=200)
-~~~
-
+```
 flavors_flavor 테이블만 생성이 된다.
 
 ### 6.1.4 데이터베이스 마이그레이션 
@@ -103,10 +100,10 @@ flavors_flavor 테이블만 생성이 된다.
 이미 모델에 포함된 데이터들이 중복되어 다시 다른 모델에 포함되지 않도록 한다.
 
 ### 6.2.2 캐시와 비정규화 
-'24장 장고 성능 향상시키기'에서 자세히 다룬다.
+`24장 장고 성능 향상시키기`에서 자세히 다룬다.
 
 ### 6.2.3 반드시 필요한 경우에만 비정규화를 하도록 하자 
-'24장 장고 성능 향상시키기'에서 제시한 방법들로도 해결할 수 없을 때 비정규화에 대해 고민해도 늦지않다.
+`24장 장고 성능 향상시키기`에서 제시한 방법들로도 해결할 수 없을 때 비정규화에 대해 고민해도 늦지않다.
 
 ### 6.2.4 언제 널을 쓰고 언제 공백을 쓸 것인가 
 모델 필드 인자들에 대한 가이드 참고하기
@@ -154,13 +151,95 @@ flavors_flavor 테이블만 생성이 된다.
 
 ## 6.3 모델의 _meta API 
 
+`_meta` 의 원래 목적: 모델에 대한 부가적인 정보를 장고 내부적으로 이용하는 것   
+
+- [모델 _meta 문서](http://docs.djangoproject.com/en/1.8/ref/models/meta/)
+- [모델 _meta 에 대한 장고 1.8 릴리스 노트](https://docs.djangoproject.com/en/1.8/releases/1.8/#model-meta-api)
+
+
 ## 6.4 모델 매니저 
+모델에 질의하면 장고의 ORM을 통한다. 이 때 모델 매니저를 호출하게됨.
+### model manager
+- 데이터베이스와 연동하는 인터페이스  
+- 원하는 클래스의 제어를 위해 모델 클래스의 모든 인스턴스 세트에 작동
+
+#### Custom model manager 예제
+
+##### 생성
+
+```python
+from django.db import models
+from django.utils import timezone
+
+class PublishedManager(models.Manager):
+	
+	use_for_related_fields = True
+	
+	def published(self, **kwargs):
+		return self.filter(pub_date__lte=timezone.now(), **kwargs)
+		
+
+class FlavorReview(models.Model):
+	review = models.CharField(max_length=255)
+	pub_date = models.DateTimeField()
+	
+	# 커스텀 모델 매니저를 추가
+	objects = PublishedManager()
+```
+
+##### 사용 
+
+```python
+>>> from reviews.models import FlavorReview
+>>> FlavorReview.objects.count()
+35
+>>> FlavorReview.objects.published().count()
+31
+```
+
+### 기존 모델 매니저를 교체할 때 주의할 것
+- 모델을 상속받아 이용 시 추상화 기초 클래스의 자식들은 부모 모델의 매니저를 받고, 접합 기반 클래스의 자식들은 부모 모델의 매니저를 받지 못한다.
+- 모델 클래스에 적용되는 첫 번째 매니저는 장고가 기본값으로 취급하는 매니저이다. : 파이썬의 일반벅인 패턴을 무시하는 것이기에 Queryset으로 부터의 결과를 예상할 수 없게 된다.
+
+**objects = models.Manager() 는 항상 새로은 커스텀 모델 매니저 위에 정의하자.**  
+
+> [추가적인 읽을거리](https://docs.djangoproject.com/en/1.11/topics/db/managers/)
+
 
 ## 6.5 거대 모델 이해하기 
+
+### 거대 모델 (fat model)
+
+**코드 재사용을 개선할 수 있는 최고의 방법**  
+데이터 관련 코드를 모델 메서드, 클래스 메서드, 프로퍼티, 매니저 메서드 안에 넣어 캡슐화 하는 것.
+
+##### 문제점
+- 모델 코드의 크기를 신의 객체(god object) 수준으로 증가시킨다.
+- 복잡해지므로 코드의 이해, 테스트 또는 유지보수에 어려움을 겪게 된다.
+
+> 모델의 크기가 너무 커지면, 코드를 분리한다.    
+> 메서드, 클래스 메서드, 프로퍼티들을 유지하고 해당 로직을 모델 행동(model behavior) 또는 상태 없는 헬퍼 함수(stateless helper function)으로 이전.
+
 ### 6.5.1 모델 행동(믹스인) 
+- [코드 중복을 막는 작성법 - kevin Stone](http://blog.kevinastone.com/django-model-behaviors.html)
+- 10.2 클래스 기반 뷰와 믹스인 이용하기
 
 ### 6.5.2 상태 없는 헬퍼 함수 
+- 로직을 유틸리티 함수로 작성하면 독립적 구성이 가능
+- 로직에 대한 테스트가 쉬워짐
+- stateless 이므로 함수에 더 많은 인자를 필요로 하게 된다.
+
+> `29장 유틸리티들에 대해`를 참고
 
 ### 6.5.3 모델 행동과 헬퍼 함수 
+완벽하진 않지만 적절히 사용한다면 도움이 된다.
 
 ## 6.6 요약 
+
+- 모델은 신중하게 디자인하자
+- 다른 선택지를 충분히 고려 후 방법이 없을 경우에 비정규화를 고려하자
+- 인덱스를 사용하자
+- 상속은 접합 모델(concrete model)이 아닌 추상화 기초 클래스로 부터 상속하자
+- null=True, blank=True 옵션은 가이드라인을 참고
+- 거대 모델은 모델 전부를 신의 객체가 될 위험도 있다.
+
