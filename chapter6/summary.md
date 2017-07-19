@@ -245,6 +245,7 @@ class FlavorReview(models.Model):
 모델은 추상화 모델로부터 로직들을 상속받는다.
 
 - [코드 중복을 막는 작성법 - kevin Stone](http://blog.kevinastone.com/django-model-behaviors.html)
+- [한글판](http://jellyms.kr/808)
 - 10.2 클래스 기반 뷰와 믹스인 이용하기
 
 ### 6.5.2 상태 없는 헬퍼 함수 
