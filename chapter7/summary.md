@@ -6,14 +6,16 @@
 - Django 이용방법을 배운다는 것은 이런 예상과는 다른 현상을 이해해 나가는 과정이라고 할 수 있다.
 - 7장에서는 ORM이 예상과 다르게 동작하는 다양한 경우들을 살펴본다.
 
-> #### ORM이 뭔가요? (Object Relational Mapping)
-> - OOP 언어와 데이터를 다루는 RDBMS 와의 상이한 시스템을 매핑하여, 데이터 관련 OOP 프로그래밍을 쉽게 하도록 도와주는 기술
+> ### ORM이 뭔가요? (Object Relational Mapping)
+> - OOP 언어와 데이터를 다루는 RDBMS 와의 상이한 시스템을 매핑하여,
+    데이터 관련 OOP 프로그래밍을 쉽게 하도록 도와주는 기술
 > - Model Class를 통해서 객체를 만들고 이 객체를 통해서 DB에 접근한다.
 > - ~~SQL을 몰라도 데이터를 알고싶다!~~
 > ![Django-Models](http://i.imgur.com/cxaR4rT.png)
+>
 > 출처 [The Django Book](https://djangobook.com/tutorials/django-overview/)
 >        
-> #### 쿼리셋 (QuerySet)이 뭔가요?
+> ### 쿼리셋 (QuerySet)이 뭔가요?
 >```python
 > >>> from .models import Book
 > >>> Book.objects.all() # Book 모델(테이블)의 모든 데이터를 가져오기
@@ -112,7 +114,8 @@ def fun_function(**kwargs):
   return Promo.objects.active().filter(Q(name__startswith=name)|Q(description__icontains=name))
 ```
 
-> Promo 모델 중에서 active 메소드로 리턴된 레코드 중에서 name 값이 name으로 시작하거나, description 값 중에 name이 포함되어 있는 레코드를 모두 가져와줘!
+> Promo 모델 중에서 active 메소드로 리턴된 레코드 중에서 name 값이 name으로 시작하거나,
+> description 값 중에 name이 포함되어 있는 레코드를 모두 가져와줘!
 
 - **지연연산 (Lazy Evaluation)** 을 활용하여 장고 코드를 좀 더 깔끔하게 만들 수 있다.
 - 지연연산?
@@ -155,7 +158,7 @@ def fun_function(**kwargs):
 - **나쁜예제**
   - 모든 고객 레코드에 대해서 for loop가 돌고있다. => 매우 느리고, 메모리 소모가 크다
   - 경합상황 (race condition)에 직면할 가능성이 크다. => 데이터 분실 우려
-  > 경합상황 : 다중 프로그래밍 시스템이나 다중 처리기 시스템에서 두 명령어가 동시에 같은 기억 장소를 액세스할 때 그들 사이의 경쟁에 의해 수행 결과를 예측할 수 없게 되는 것.
+> 경합상황 : 다중 프로그래밍 시스템이나 다중 처리기 시스템에서 두 명령어가 동시에 같은 기억 장소를 액세스할 때 그들 사이의 경쟁에 의해 수행 결과를 예측할 수 없게 되는 것.
 
 ```python
 # 절대 따라하지 말 것
@@ -186,7 +189,8 @@ customers = Customer.objects.filter(scoops_ordered__gt=F('store_visits'))
 SELECT * from customers_customer where scoops_ordered > store_visits
 ```
 
-![스크린샷 2017-07-25 오후 4.49.31](http://i.imgur.com/fd11dGS.png)
+![스크린샷 2017-07-25 오후 4.49.31](http://i.imgur.com/fd11dGS.png)     
+
 [출처 - school of web](http://schoolofweb.net/blog/posts/%EB%82%98%EC%9D%98-%EC%B2%AB-django-%EC%95%B1-%EB%A7%8C%EB%93%A4%EA%B8%B0-part-4-1/)
 
 ### 7.4.2 데이터베이스 함수들
@@ -219,7 +223,7 @@ SELECT * from customers_customer where scoops_ordered > store_visits
 ---
 
 ## 7.7 트랜잭션 (Transactions)
-<br>
+
 ![스크린샷 2017-07-25 오후 7.40.46](http://i.imgur.com/ICRjz9A.png)
 
 - Transaction : (명사) 처리, 처리과정
@@ -228,7 +232,7 @@ SELECT * from customers_customer where scoops_ordered > store_visits
 - 데이터베이스 충돌을 해결하기 위해서 둘 또는 그 이상의 데이터베이스 업데이트를 **단일화된 작업** 으로 처리하는 기법
 - 하나의 수정작업(update)가 실패하면 트랜젝션 상의 모든 업데이트가 실패 이전 상태로 복구된다.
 
-<br>
+
 ![acid](http://i.imgur.com/vZGwKQp.gif)
 
 - 트랜젝션의 특성 (ACID)
@@ -238,7 +242,7 @@ SELECT * from customers_customer where scoops_ordered > store_visits
   - 지속성 (Durable)
 - 장고는 1.8 부터 사용하기 쉬운 트랜잭션 메커니즘을 제공
 
-> **데코레이터(decorator)를 이용한 트랜잭션 예시** ([출처](https://blueshw.github.io/2016/01/16/2016-01-16-django-migration/))
+> ### 데코레이터(decorator)를 이용한 트랜잭션 예시 ([출처](https://blueshw.github.io/2016/01/16/2016-01-16-django-migration/))
 
 ```python
 from django.db import transaction
@@ -252,7 +256,7 @@ def transaction_test1(arg1, arg2):
     # end transaction
 ```
 
-> **with 명령어를 이용한 트랜잭션 예시** ([출처](https://blueshw.github.io/2016/01/16/2016-01-16-django-migration/))
+> ### with 명령어를 이용한 트랜잭션 예시 ([출처](https://blueshw.github.io/2016/01/16/2016-01-16-django-migration/))
 
 ```python
 from django.db import transaction
