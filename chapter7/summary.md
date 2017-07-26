@@ -92,7 +92,7 @@ def list_flavor_line_item(sku):
     msg = "{} 재고가 없습니다.".format(sku)
     raise OutOfStock(msg)
   except Flavor.MultipleObjectsReturned:
-    msg = "여러개의 아이템이 SKU {}를 갖고 있습니다. 고쳐주세요!"
+    msg = "여러개의 아이템이 SKU {}를 갖고 있습니다. 고쳐주세요!".format(sku)
     raise CorruptedDatabase(msg)
 ```
 
