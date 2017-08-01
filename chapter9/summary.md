@@ -135,7 +135,7 @@ def sprinkle_detail(request, pk):
 
 > - functools.wraps()는 무엇인가
 > docstrings 같은 중요한 데이터를 포함한 메타데이터를 새로이 데코레이션 되는 함수에 복사해 주는 편리한 도구
-> [functools.wraps](https://docs.python.org/2/library/functools.html#functools.wraps)
+> [functools.wraps](https://docs.python.org/3/library/functools.html#functools.wraps)
 
 ### 9.3.1 데코레이터 남용하지 않기
 
