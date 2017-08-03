@@ -20,7 +20,7 @@
 
 ## 9.2 HttpRequest 객체 전달하기
 
-~~~python
+~~~ python
 # sprinkles/utils.py
 
 from django.core.exceptions import PermissionDenied
@@ -37,7 +37,7 @@ def check_sprinkle_rights(request):
     raise PermissionDenied
 ~~~
 
-~~~python
+~~~ python
 # sprinkle/views.py
 
 from django.shortcuts import get_object_or_404
@@ -80,7 +80,7 @@ def sprinkle_preview(request):
 
 간편표기법(syntacitc sugar): 표현이나 가독성을 좋게 하기 위해 프로그래밍 언어에 추가되는 문법을 나타낸다.
 
-~~~python
+~~~ python
 # 간단한 데코레이터 템플릿
 import functools
 
@@ -94,7 +94,7 @@ def decorator(view_func):
     return new_view_func
 ~~~
 
-~~~python
+~~~ python
 # sprinkles/decorators.py
 from functools import wraps
 
@@ -113,9 +113,9 @@ def check_sprinkles(view_func):
         # HttpResponse 객체를 반환
         return response
     return new_view_func
-~~
+~~~
 
-~~~python
+~~~ python
 # view.py
 from django.shortcuts import get_object_or_494, render
 
