@@ -200,9 +200,32 @@ MRO는 다중 상속을 가진 클래스에서 사용할 올바른 메소드를 
 
 #### Impossible Method Resolution
 
+~~~python
+class P1:
+	pass
 
+class P2:
+	pass
 
-[출처영상: Method Resolution Order](https://www.youtube.com/watch?v=BQiQoAYsUFw&t=345s)
+class C1(P1, P2):
+	pass
+
+class C2(P2, P1):
+	pass
+	
+class GC(C1, C2):
+	pass
+~~~
+
+~~~
+TypeError: Cannot create a consistent method resolution
+order (MRO) for bases P1, P2
+~~~
+
+> 출처  
+> [Method Resolution Order](https://www.youtube.com/watch?v=BQiQoAYsUFw&t=345s)  
+> [Pycon2016-MRO 영상](https://www.youtube.com/watch?v=cuonAMJjHow&feature=youtu.be)  
+> [Understanding Python MRO](https://makina-corpus.com/blog/metier/2014/python-tutorial-understanding-python-mro-class-search-path)
 
 ## 10.3 어떤 장고 제네릭 클래스 기반 뷰를 어떤 태스크에 이용할 것인가?
 제네릭 클래스 기반 뷰의 장점은 단순화를 희생해서 얻은 결과다.  
