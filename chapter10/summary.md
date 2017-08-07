@@ -89,7 +89,7 @@ class Icecream:
 
 class New(Icecream):
 	def __init__(self, name, flavor, topping):
-		super().__init__(name, age)
+		super().__init__(name, flavor)
 		self.topping = topping
     
 	def info(self):
@@ -363,7 +363,7 @@ class FlavorCreateView(LoginRequiredMixin, CreateView):
 ~~~
 
 form\_valid()에서 로직을 추가했던 것과 같은 방법이다.
-form\_valid(), for_invalid() 메서드를 오버라이딩 하는 예는 `11.5.1 모델폼 데이터는 폼에 먼저 저장된 이후 모델 인스턴스에 저장된다` 에서 다룬다.
+form\_valid(), form_invalid() 메서드를 오버라이딩 하는 예는 `11.5.1 모델폼 데이터는 폼에 먼저 저장된 이후 모델 인스턴스에 저장된다` 에서 다룬다.
 
 
 ### 10.4.4 뷰 객체 이용하기 
@@ -590,7 +590,8 @@ class FlavorListView(ListView):
 
 ## 10.6 django.views.generic.View 이용하기 
 모든 뷰에서 django.views.generic.View만 이용하여 장고 프로젝트를 전부 구성할 수도 있다.   
-참고: [장고 공식문서 - 클래스 기반 뷰 소개](https://docs.djangoproject.com/en/1.11/topics/class-based-views/intro/#using-class-based-views)
+
+> 참고: [장고 공식문서 - 클래스 기반 뷰 소개](https://docs.djangoproject.com/en/1.11/topics/class-based-views/intro/#using-class-based-views)
 
 각 HTTP 메서드를 중첩된 if 문으로 처리하는 함수 기반 뷰를 작성하거나  
 get_context_data()와 form_valid() 메서드 뒤에 숨어있는 HTTP 메서드들이 위치한 클래스 기반 뷰를 작성하는 대신, 이 메서드들에 직접 접근할 수 있다면?
