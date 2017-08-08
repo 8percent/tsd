@@ -380,7 +380,8 @@ from .tasks import update_users_who_favorited
 
 class FavoriteMixin(object):
 
-	@cached_property
+	# 메서드의 결과를 캐시한다(인스턴스가 수행되는 동안 지속)
+	@cached_property  
 	def likes_and_favorites(self):
 		likes = self.object.likes()
 		favorites = self.object.favorites()
@@ -394,13 +395,13 @@ class FavoriteMixin(object):
 class FlavorUpdateView(LoginRequiredMixin, FavoriteMixin, UpdateView):
 	model = Flavor
 	fields = ('title', 'slug', 'scoops_remaining')
-	
+
+	# @cached_property의 결과: likes_and_favorites는 call하지 않고, 속성으로 접근
 	def form_valid(self, form):
 		update_users_who_favorited(
 			instance=self.object,
-			favorites=self.likes_and_favorites['favorites']
-			)
-		return super(FlavorCreateView, self).form_valid(form)
+			favorites=self.likes_and_favorites['favorites']  			)
+		return super(FlavorUpdateView, self).form_valid(form)
 		
 		
 class FlavorDetailView(LoginRequiredMixin, FavoriteMixin, TemplateView):
