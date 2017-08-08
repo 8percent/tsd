@@ -64,6 +64,7 @@ class FreshFruitMixin(object):
 class FruityFlavorView(FreshFruitMixin, TemplateView):
 	template_name = 'fruity_flavor.html'
 ~~~
+[get_context_data 관련 참고자료](https://stackoverflow.com/questions/36950416/when-to-use-get-get-queryset-get-context-data-in-django)  
 
 FruityFlavorView 클래스는 FreshFruitMixin과 TemplateView를 상속하고있다.
 
