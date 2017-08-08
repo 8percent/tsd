@@ -283,7 +283,7 @@ django 1.11에서 사용할 수 있다.
 | FormView | 폼 전송 | 
 | CreateView | 객체를 만들 때 | 
 | UpdateView | 객체를 업데이트 할 때 | 
-| DetailView | 객체를 삭제 | 
+| DeleteView | 객체를 삭제 | 
 | generic date view | 시간 순서로 객체를 나열해 보여줄 때 | 
 
 
@@ -334,11 +334,11 @@ from .models import Flavor
 
 class FlavorCreateView(LoginRequiredMixin, CreateView):
 	models = Flavor
-	fields = ('title', 'slug', 'sccops_remaining')
+	fields = ('title', 'slug', 'scoops_remaining')
 	
-	def form_vlaid(self, form):
+	def form_valid(self, form):
 	# 커스텀 로직이 이곳에 위치
-	return super(FlavoerCreateView, self).form_valid(form)
+		return super(FlavorCreateView, self).form_valid(form)
 ~~~
 form_valid()의 반환형: `django.http.HttpResponseRedirect`
 
@@ -357,9 +357,9 @@ from .models import Flavor
 class FlavorCreateView(LoginRequiredMixin, CreateView):
 	models = Flavor
 	
-	def form_invlaid(self, form):
+	def form_invalid(self, form):
 	# 커스텀 로직이 이곳에 위치
-	return super(FlavoerCreateView, self).form_invalid(form)
+		return super(FlavoerCreateView, self).form_invalid(form)
 ~~~
 
 form\_valid()에서 로직을 추가했던 것과 같은 방법이다.
@@ -373,7 +373,7 @@ form\_valid(), form_invalid() 메서드를 오버라이딩 하는 예는 `11.5.1
 from django.utils.functional import cached_property
 from django.views.generic import UpdateView, TemplateView
 
-from vraces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin
 
 from .models import Flavor
 from .tasks import update_users_who_favorited
