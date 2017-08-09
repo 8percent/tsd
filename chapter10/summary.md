@@ -64,7 +64,7 @@ class FreshFruitMixin(object):
 class FruityFlavorView(FreshFruitMixin, TemplateView):
 	template_name = 'fruity_flavor.html'
 ~~~
-[get_context_data 관련 참고자료](https://stackoverflow.com/questions/36950416/when-to-use-get-get-queryset-get-context-data-in-django)  
+[get\_context\_data 관련 참고자료](https://stackoverflow.com/questions/36950416/when-to-use-get-get-queryset-get-context-data-in-django)  
 
 FruityFlavorView 클래스는 FreshFruitMixin과 TemplateView를 상속하고있다.
 
@@ -75,6 +75,8 @@ FruityFlavorView 클래스는 FreshFruitMixin과 TemplateView를 상속하고있
 ### super()
 - super() 함수는 슈퍼클래스의 메서드를 호출하는 함수이다.  
 - 다수의 슈퍼클래스가 존재한다면 MRO를 통해 호출 순서를 결정한다. 
+
+[python.org - super](https://docs.python.org/3/library/functions.html#super)
 
 ~~~python
 # 부모 클래스의 메서드를 사용하고 싶은 경우 
@@ -197,7 +199,7 @@ MRO는 다중 상속을 가진 클래스에서 사용할 올바른 메소드를 
 
 
 > 1. python3 에서는 각 클래스가 기본적으로 파이썬의 기본 객체 `object`를 상속하기 때문에 명시하지 않아도 된다.  
-> 2. `model.__mro__` 또는 `model.mro()`를 사용하면 어떤 경로로 메소드를 찾고 있는지 확인할 수 있다. (new style에서만 적용됨)  
+> 2. `ClassName.__mro__` 또는 `ClassName.mro()`를 사용하면 어떤 경로로 메소드를 찾고 있는지 확인할 수 있다. (new style에서만 적용됨)  
 
 #### Impossible Method Resolution
 
@@ -284,7 +286,7 @@ django 1.11에서 사용할 수 있다.
 | FormView | 폼 전송 | 
 | CreateView | 객체를 만들 때 | 
 | UpdateView | 객체를 업데이트 할 때 | 
-| DeleteView | 객체를 삭제 | 
+| DeleteView | 객체를 삭제 할 때 | 
 | generic date view | 시간 순서로 객체를 나열해 보여줄 때 | 
 
 
@@ -338,7 +340,7 @@ class FlavorCreateView(LoginRequiredMixin, CreateView):
 	fields = ('title', 'slug', 'scoops_remaining')
 	
 	def form_valid(self, form):
-	# 커스텀 로직이 이곳에 위치
+		# 커스텀 로직이 이곳에 위치
 		return super(FlavorCreateView, self).form_valid(form)
 ~~~
 form_valid()의 반환형: `django.http.HttpResponseRedirect`
@@ -359,7 +361,7 @@ class FlavorCreateView(LoginRequiredMixin, CreateView):
 	models = Flavor
 	
 	def form_invalid(self, form):
-	# 커스텀 로직이 이곳에 위치
+		# 커스텀 로직이 이곳에 위치
 		return super(FlavoerCreateView, self).form_invalid(form)
 ~~~
 
@@ -447,6 +449,15 @@ class Flavor(models.Model):
 		return reverse("flavors:detail", kwargs={"slug": self.slug})
 ~~~
 
+> [SlugField](https://docs.djangoproject.com/en/1.11/ref/models/fields/#slugfield)  
+> 일반적으로 URL에 사용하는 글자, 숫자, 밑줄, 하이픈만 포함하는 짧은 레이블이다.
+> 
+> Flavor의 객체의 id가 5번인 데이터를 url로 접근하려면 
+> `www.example.com/flavor/5` 로 접근할 수도 있지만
+> 해당 객체의 slug필드의 값으로 접근할 수도 있다.   
+> id가 5번인 객체의 slug필드의 값이 'coffee'라면 
+> `www.example.com/flavor/coffee` URL을 사용할 수 있다. 
+
 ### 10.5.1 뷰 + 모델폼 예제
 - 가장 단순하고 일반적인 장고 폼 시나리오
 - 모델 생성 후, 모델에 새로운 레코드를 추가하거나 기존 레코드를 수정하는 기능
@@ -520,6 +531,19 @@ class FlavorUpdateView(LoginRequiredMixin, FlavorActionMixin, UpdateView):
 class FlavorDetailView(DetailView):
 	model = Flavor
 ~~~
+
+> @property
+> property()는 특정한 descriptor object를 반환한다.
+> 
+> ~~~python
+> @property
+> def foo(self): return self._foo
+> 
+> 아래와 같음
+> 
+> def foo(self): return self._foo
+> foo = property(foo)
+> ~~~
 
 생성 또는 업데이트된 후 메시지 리스트가 FlavorDetailView의 콘텍스트로 전달된다. 
 템플릿을 다음과 같이 작성하면, 생성 또는 업데이트 시 메시지를 표시해줄 수 있다.
