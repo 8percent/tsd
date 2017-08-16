@@ -106,8 +106,8 @@ class TasterForm(forms.ModelForm):
   
   def __init__(self, *args, **kwargs):
     # user 속성 폼에 추가하기
-    self.user = kwargs.pop('user')
-    super(TasterForm, self).__init__(*args, **kwargs)
+    self.user = kwargs.pop('user') # 바로 kwargs['user'] 대신 pop을 사용하여 kwargs에서 
+    super(TasterForm, self).__init__(*args, **kwargs)
 ~~~
 super()를 호출하기 이전에 self.user가 추가
 
@@ -140,9 +140,13 @@ class TasterUpdateView(LoginRequiredMixin, UpdateView):
 - form.is_valid() 가 호출될 때
 1. 폼이 데이터를 받으면 form.is_valid()는 form.full_clean() 메서드를 호출한다.
 2. form.full_clean()은 폼 필드들과 각각의 필드 유효성을 하나하나 검사하면서 다음과 같은 과정을 수행한다.
+  
   a. 필드에 들어온 데이터에 대해 to_python()을 이요하여 파이썬 형식으로 변환하거나 변환할 때 문제가 생기면 ValidationError를 일으킨다.
+  
   b. 커스텀 유효성 검사기(validator)를 포함한 각 필드에 특별한 유효성을 검사한다. 문제가 있을 때 ValidationError를 일으킨다.
+  
   c. 폼에 clean_<field>() 메서드가 있으면 이를 실행한다.
+
 ~~~python
 def _clean_fields(self):
     for name, field in self.fields.items():
@@ -178,7 +182,9 @@ def clean(self):
     return self.cleaned_data
 ~~~
 4. ModelForm 인스턴스의 경우 form.post_clean()이 다음 작업을 한다.
+  
   a. form.is_valid()가 True나 False로 설정되어 있는 것과 관계없이 ModelForm의 데이터를 모델 인스턴스로 설정한다.
+  
   b. 모델의 clean() 메서드를 호출한다. 참고로 ORM을 통해 모델 인스턴스를 저장할 때는 메델의 clean() 메서드가 호출되지는 않는다.
   
 ## 11.5.1 모델폼 데이터는 폼에 먼저 저장된 이후 모델 인스턴스에 저장된다.
