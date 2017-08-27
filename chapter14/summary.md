@@ -17,9 +17,8 @@
 '22장 테스트, 정말 거추장스럽고 낭비일까?' 에서 다루듯 테스팅 함수를 제작하는 것 만으로 필터를 테스트할 수 있다. 
 
 ### 14.1.2 필터와 코드의 재사용 
-장고의 defaultfilter.py 소스 코드를 보면 알 수 있든, 대부분의 필터 로직은 다른 라이브러리로부터 상속되어 왔다.   
-`django.template.defaultfilters.slugify`를 임포트할 필요 없이,  
-`django.utils.text.slugify`를 바로 임포트하여 사용하면 된다. 
+장고의 [defaultfilter.py 소스 코드](https://github.com/django/django/blob/master/django/template/defaultfilters.py)를 보면 알 수 있듯, 대부분의 필터 로직은 다른 라이브러리로부터 상속되어 왔다.     
+`django.template.defaultfilters.slugify`를 임포트할 필요 없이, `django.utils.text.slugify`를 바로 임포트하여 사용하면 된다. 
 
 ~~~python
 # template/defaultfilters.py
@@ -56,7 +55,8 @@ def slugify(value, allow_unicode=False):
 
 ## 14.2 커스텀 템플릿 태그 
 
-> 너무 많은 템플릿 태그는 자제해 주세요. 디버깅하기가 너무 고통스러워요...
+> 너무 많은 템플릿 태그는 자제해 주세요. 디버깅하기가 너무 고통스러워요.  
+> - 대니얼의 코드를 디버깅하던 중에 오드리가...
 
 템플릿 태그 필터에 너무 많은 로직을 넣을 경우, 겪을 수 있는 문제들은 다음과 같다. 
  
