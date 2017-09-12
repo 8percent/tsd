@@ -1,6 +1,7 @@
 # 16장. REST API 구현하기
 
 REST(representational state transfer) API는 다양한 환경과 용도에 맞는 데이터를 제공하는 디자인을 정의하고 있다. <br/>
+<a href="http://meetup.toast.com/posts/92">REST API</a>
 <a href="http://www.django-rest-framework.org/tutorial/quickstart/">DRF 문서</a>
 
 ## 16.1 기본 REST API 디자인의 핵심
