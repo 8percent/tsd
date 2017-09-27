@@ -35,25 +35,20 @@ default_app_config = 'django.contrib.admin.apps.AdminConfig'
 
 def autodiscover_modules(*args, **kwargs):
 
-    from django.apps import apps
+from django.apps import apps
 
     register_to = kwargs.get('register_to')
-	
     for app_config in apps.get_app_configs():
         for module_to_search in args:
             try:
                 if register_to:
-                # register_to._registry 는 site._registry가 된다.
-                before_import_registry = copy.copy(register_to._registry)
-					
-            import_module('%s.%s' % (app_config.name, module_to_search))
-				
+                    before_import_registry = copy.copy(register_to._registry)
+
+                import_module('%s.%s' % (app_config.name, module_to_search))
             except Exception:
                 if register_to:
                     register_to._registry = before_import_registry
-					
-            if module_has_submodule(app_config.module, module_to_search):
-                raise
+                    raise
 ```
 
 ```python
@@ -63,37 +58,38 @@ class AdminSite:
     ...
 	
     def __init__(self, name='admin'):
-        self._registry = {}  
+        self._registry = {}
         self.name = name
         self._actions = {'delete_selected': actions.delete_selected}
         self._global_actions = self._actions.copy()
-        all_sites.add(self)
-	
+        all_sites.add(self)	
+
     ...
 	
     def register(self, model_or_iterable, admin_class=None, **options):
+        
         if not admin_class:
             admin_class = ModelAdmin
 
         if isinstance(model_or_iterable, ModelBase):
             model_or_iterable = [model_or_iterable]
-			
+            
         for model in model_or_iterable:
             if model._meta.abstract:
                 raise ImproperlyConfigured(
                     'The model %s is abstract, so it cannot be registered with admin.' % model.__name__
-				)
+                )
 
-        if model in self._registry:
-            raise AlreadyRegistered('The model %s is already registered' % model.__name__)
+            if model in self._registry:
+                raise AlreadyRegistered('The model %s is already registered' % model.__name__)
 
-            if not model._meta.swapped:          
+            if not model._meta.swapped:
                 if options:
                     options['__module__'] = __name__
                     admin_class = type("%sAdmin" % model.__name__, (admin_class,), options)
 
                 self._registry[model] = admin_class(model, self)
-
+                
 site = AdminSite()  
 ```
 
@@ -125,6 +121,7 @@ Admin register 시 admin class를 할당하지 않으면, 기본으로 ModelAdmi
 
     ```python
     # detail view 접근 막기
+    
     class IceCreamAdmin(admin.ModelAdmin):
         list_display_links = (None, )
     ```
