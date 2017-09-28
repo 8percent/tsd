@@ -268,9 +268,10 @@ action 재정의로 객체 삭제를 커스텀할 수 있다.
 특정 객체만 바로 삭제하는 경우에 문제가 되는 케이스에 이용할 수 있음. (재정의한 action에서 연관된 데이터를 처리할 수 있다.)
 
 ## 하나의 모델에 대해 두 개의 어드민 페이지를 만들 수 있을까?
-model은 admin register는 한번만 가능.
-중복의 경우 AlreadyRegistered 에러가 발생.
+기본적으로 admin register는 한번만 가능하다.
+중복으로 같은 모델을 등록하려는 경우 AlreadyRegistered 에러가 발생.
 
+- Proxy model을 만들어 두 개의 어드민을 사용하는 방법이 있다.
 
 > [Documentation - admin](https://docs.djangoproject.com/en/1.11/ref/contrib/admin/) 참고 
 
