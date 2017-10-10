@@ -125,11 +125,16 @@ requirements>=1.2.3,<=2.6.0
 - URL Namespaces 이용을 통해서 프로젝트들 사이에서 서로 충돌이 나는 것을 막을 수 있다.
 
 <br>
+
 ## 쉬운 방법으로 패키지 제작하기
 - [cookiecutter](https://github.com/audreyr/cookiecutter)를 사용하여 프로젝트 템플릿을 쉽게 만들어 보자
+
 <br>
+
 <br>
+
 ## 오픈 소스 패키지 관리하기
+
 ### 풀 요청에 대한 보상
 - CONTRIBUTORS.txt 또는 AUTHORS.txt 같은 프로젝트 저작자 문서를 만들고 공헌한 사람들의 이름을 반드시 넣어야 한다.
 
