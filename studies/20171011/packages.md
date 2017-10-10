@@ -30,16 +30,14 @@ celery 테스크 관리 및 모니터링 도구
 
 # 데이터베이스
 
-## [psycopg2](http://initd.org/psycopg/docs/)
-PostgreSQL 데이터베이스 어댑터
-
 ## [django-maintenancemode-2](https://github.com/alsoicode/django-maintenancemode-2)
 Maintainance Mode 로의 전환을 쉽게 해줌
 
-# 로깅
-## [logutils](http://pythonhosted.org/logutils/)
-로깅에 유용한 핸들러를 추가해준다.
+# 테스팅
 
-## [Sentry]
-
+## [django-test-plus](http://django-test-plus.readthedocs.io/en/latest/)
+장고의 기본 테스트에 유용한 추가 기능을 제공해 주는 패키지.
+- [assertGoodView](http://django-test-plus.readthedocs.io/en/latest/low_query_counts.html#assertgoodview-url-name-args-kwargs)
+- [assertNumQueriesLessThan](http://django-test-plus.readthedocs.io/en/latest/low_query_counts.html#assertnumquerieslessthan-number-context)
+- [assertLoginRequired](http://django-test-plus.readthedocs.io/en/latest/auth_helpers.html#assertloginrequired-url-name-args-kwargs)
 
