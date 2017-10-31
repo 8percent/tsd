@@ -20,7 +20,7 @@ django-debug-toolbar로 쿼리의 출처와 아래와 같은 병목 구간을 �
 > **프로파일링과 성능 분석을 위한 패키지들**  
 > 
 > **django-cache-panel**    
-장고에서 캐시의 이용을 시각화하여 보여준다. [link](https://pypi.python.org/pypi/django-cache-panel)
+장고에서 캐시의 이용을 시각화하여 보여준다. [link](https://pypi.python.org/pypi/django-cache-panel)  
 > **django-extensions**    
 장고의 프로파일링 도구를 활성화하여 run-server 명령을 시작하는 RunProfileServer 라는 도구를 제공한다. [link](http://django-extensions.readthedocs.io/en/latest/runprofileserver.html)  
 > **silk**   
