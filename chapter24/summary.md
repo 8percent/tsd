@@ -18,11 +18,12 @@ django-debug-toolbar로 쿼리의 출처와 아래와 같은 병목 구간을 �
 3. 느린 쿼리
 
 > **프로파일링과 성능 분석을 위한 패키지들**  
-> **django-cache-panel**  
+> 
+> **django-cache-panel**    
 장고에서 캐시의 이용을 시각화하여 보여준다. [link](https://pypi.python.org/pypi/django-cache-panel)
-> **django-extensions**  
+> **django-extensions**    
 장고의 프로파일링 도구를 활성화하여 run-server 명령을 시작하는 RunProfileServer 라는 도구를 제공한다. [link](http://django-extensions.readthedocs.io/en/latest/runprofileserver.html)  
-> **silk**  
+> **silk**   
 사용자에게 인터페이스를 보여주기 이전에 HTTP 요청과 데이터베이스 쿼리를 저장하여 실시간 프로파일링할 수 있도록 한다. [link](https://github.com/mtford90/silk)
 
 ### 24.2.2 쿼리 수 줄이기
